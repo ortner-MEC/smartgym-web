@@ -2,148 +2,344 @@ import { useState } from 'react'
 import './index.css'
 
 function App() {
+  const [activeTab, setActiveTab] = useState(0)
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<null | 'sending' | 'success' | 'error'>(null)
+  const [status, setStatus] = useState<null | 'sending' | 'success'>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('sending')
-    // Dies wird später an das Kimi 2.5 Backend geleitet
-    setTimeout(() => {
-      setStatus('success')
-      setEmail('')
-    }, 1500)
+    setTimeout(() => { setStatus('success'); setEmail('') }, 1500)
   }
 
-  const facilities = [
-    {
-      title: 'Premium Geräte',
-      description: 'Modernste Matrix- und Technogym-Maschinen für jedes Level.',
-      icon: '⚡',
-      image: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop'
-    },
-    {
-      title: 'Freihantelbereich',
-      description: 'Viel Platz, Racks, Kurzhanteln bis 60kg. Alles was du brauchst.',
-      icon: '🏋️‍♂️',
-      image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'
-    },
-    {
-      title: 'Cardio-Zone',
-      description: 'Laufbänder, Stairmaster & Bikes mit Netflix & Co.',
-      icon: '🏃‍♀️',
-      image: 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=600&auto=format&fit=crop'
-    }
+  const features = [
+    { icon: '📐', title: '350 m² Trainingsfläche', desc: 'Genug Platz für dein Workout – auch bei Stoßzeiten.' },
+    { icon: '⚡', title: 'Premium Geräte', desc: 'Hochwertige Kraft- und Cardiogeräte neuester Generation – für effektives Training auf jedem Level.' },
+    { icon: '💪', title: 'Kraft, Cardio & Funktional', desc: 'Ein Trainingsbereich für jede Trainingsrichtung.' },
+    { icon: '📱', title: 'Deine SmartGym App', desc: 'Tür öffnen, individuelle Trainingspläne und Fortschrittstracking – alles in einer App.' },
+    { icon: '📊', title: 'Body-Check-Station', desc: 'Verfolge deinen Fortschritt – damit du immer weißt, wo du stehst.' },
+    { icon: '👥', title: 'Kursbereich', desc: 'Gruppentrainingsbereich, um gemeinsam zu trainieren und gemeinsam zu wachsen.' },
+  ]
+
+  const galleryTabs = [
+    { label: 'Cardiobereich', image: 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=1200&auto=format&fit=crop', overlay: 'Modernste Cardiogeräte mit Entertainment-System – Laufbänder, Bikes & Stairmaster.' },
+    { label: 'Funktionalbereich', image: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200&auto=format&fit=crop', overlay: 'Freie Fläche für funktionelles Training, Mobility und Stretching.' },
+    { label: 'Krafttraining', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200&auto=format&fit=crop', overlay: 'Maschinen und Freihanteln für gezielten Muskelaufbau.' },
+  ]
+
+  const memberships = [
+    { name: 'Flex', price: '29,90', interval: '/ Monat', features: ['Zugang 24/7', 'SmartGym App', 'Monatlich kündbar'], highlight: false },
+    { name: 'Smart', price: '24,90', interval: '/ Monat', features: ['Zugang 24/7', 'SmartGym App', 'Trainingspläne', 'Body-Check'], highlight: true },
+    { name: 'Premium', price: '39,90', interval: '/ Monat', features: ['Zugang 24/7', 'SmartGym App', 'Trainingspläne', 'Body-Check', 'Kurse', 'Getränke-Flat'], highlight: false },
+  ]
+
+  const testimonials = [
+    { name: 'Laura M.', text: 'Endlich ein Studio, das wirklich 24/7 offen hat. Die App ist super intuitiv!', stars: 5 },
+    { name: 'Max K.', text: 'Top Geräte und immer sauber. Das automatisierte Konzept funktioniert einwandfrei.', stars: 5 },
+    { name: 'Sophie R.', text: 'Der Body-Check motiviert mich extrem. Man sieht den Fortschritt schwarz auf weiß.', stars: 5 },
+  ]
+
+  const faqs = [
+    { q: 'Wie komme ich ins Studio?', a: 'Über die SmartGym App. Du öffnest die Tür direkt mit deinem Smartphone – kein Schlüssel, keine Karte nötig.' },
+    { q: 'Ist das Studio wirklich 24/7 geöffnet?', a: 'Ja! Du kannst rund um die Uhr trainieren – 365 Tage im Jahr, auch an Feiertagen.' },
+    { q: 'Gibt es Personal vor Ort?', a: 'SmartGym ist ein vollautomatisiertes Studio. Bei Fragen erreichst du unser Team jederzeit über die App oder per Chat.' },
+    { q: 'Kann ich ein Probetraining machen?', a: 'Klar! Buche einfach über den Button oben dein kostenloses Probetraining.' },
+    { q: 'Welche Zahlungsmethoden werden akzeptiert?', a: 'SEPA-Lastschrift, Kreditkarte und PayPal.' },
   ]
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-[#a3e635] selection:text-black pb-20">
-      
-      {/* Navigation - Runder Look */}
+    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-lime-400 selection:text-black">
+
+      {/* ─── Navigation ─── */}
       <nav className="fixed w-full z-50 px-4 py-4 md:px-8">
         <div className="max-w-7xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-between px-6 py-3">
-          <div className="text-xl font-black uppercase tracking-tighter">
-            Smart<span className="text-[#a3e635]">Gym</span>
+          <div className="text-xl font-black uppercase tracking-tight">
+            Smart<span className="text-lime-400">Gym</span>
           </div>
-          <div className="hidden md:flex space-x-6 text-sm font-medium">
-            <a href="#facilities" className="hover:text-[#a3e635] transition-colors">Ausstattung</a>
-            <a href="#about" className="hover:text-[#a3e635] transition-colors">Konzept</a>
-            <a href="#contact" className="hover:text-[#a3e635] transition-colors">Franchise</a>
+          <div className="hidden md:flex space-x-6 text-sm font-medium text-zinc-300">
+            <a href="#features" className="hover:text-white transition-colors">Studio</a>
+            <a href="#gallery" className="hover:text-white transition-colors">Tour</a>
+            <a href="#membership" className="hover:text-white transition-colors">Mitgliedschaft</a>
+            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </div>
-          <button className="bg-[#a3e635] text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-white transition-all hover:scale-105 active:scale-95">
+          <button className="bg-lime-400 text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-white transition-all hover:scale-105 active:scale-95">
             Mitglied werden
           </button>
         </div>
       </nav>
 
-      {/* Hero Section - Sehr runde Elemente */}
-      <header className="relative pt-32 pb-16 px-4 md:px-8 max-w-7xl mx-auto flex flex-col items-center justify-center text-center mt-12">
-        <div className="bg-[#a3e635]/10 text-[#a3e635] px-4 py-1.5 rounded-full text-sm font-bold tracking-wide mb-8 border border-[#a3e635]/20">
-          NEU IN SPANIEN
+      {/* ─── Hero Section ─── 100vh, darkened BG image */}
+      <header className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
+            alt="SmartGym Interior"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
-        <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-          No Limits.<br/> <span className="text-[#a3e635]">Just Fitness.</span>
-        </h1>
-        <p className="text-lg md:text-xl text-zinc-400 font-medium mb-10 max-w-2xl mx-auto leading-relaxed">
-          Dein 100% automatisiertes Smart Gym. 350m² feinste Ausstattung, geöffnet von 6:00 bis 1:00 Uhr. Keine Kompromisse.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <button className="bg-[#a3e635] text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(163,230,53,0.3)]">
-            Pre-Opening Angebot
-          </button>
+
+        <div className="relative z-10 px-6 max-w-4xl mx-auto">
+          {/* Tags */}
+          <div className="flex justify-center gap-3 mb-8">
+            {['Smart', 'Digital', '24/7'].map(tag => (
+              <span key={tag} className="bg-white/10 backdrop-blur border border-white/20 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-6">
+            Smart Gym<br /><span className="text-lime-400">Baiersbronn</span>
+          </h1>
+          <p className="text-lg md:text-2xl text-zinc-300 font-light mb-10 max-w-2xl mx-auto">
+            Dein 24/7 Fitnessstudio in Baiersbronn.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-lime-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_60px_rgba(163,230,53,0.25)]">
+              Mitglied werden
+            </button>
+            <button className="border border-white/30 backdrop-blur px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all">
+              Buche dein Probetraining
+            </button>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-zinc-500 text-xs">
+          <span>Scroll</span>
+          <div className="w-5 h-8 border-2 border-zinc-500 rounded-full flex justify-center pt-1.5">
+            <div className="w-1 h-2 bg-zinc-400 rounded-full animate-bounce" />
+          </div>
         </div>
       </header>
 
-      {/* Facilities Section - Runde Karten im MyFitnessBox Style */}
-      <section id="facilities" className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div className="max-w-xl">
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4">
-              Unsere <span className="text-zinc-500">Ausstattung</span>
-            </h2>
-            <p className="text-zinc-400 text-lg">Alles, was du für ein perfektes Workout brauchst. Auf 350 Quadratmetern kompromissloser Qualität.</p>
-          </div>
-          <button className="hidden md:block bg-zinc-900 text-white border border-zinc-800 px-6 py-3 rounded-full font-bold hover:bg-zinc-800 transition-colors">
-            Komplette Liste ansehen
-          </button>
+      {/* ─── Feature Section ─── */}
+      <section id="features" className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Dein Studio</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3 mb-4">
+            Alles was du zu deinem<br />Studio wissen musst
+          </h2>
+          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+            350 m² Trainingsfläche mit Premium-Ausstattung – alles was du brauchst, rund um die Uhr für dich zugänglich.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {facilities.map((fac, idx) => (
-            <div key={idx} className="group relative rounded-[2.5rem] overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all">
-              <div className="h-64 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-900/90 z-10" />
-                <img src={fac.image} alt={fac.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute top-6 left-6 z-20 bg-black/50 backdrop-blur-md w-12 h-12 flex items-center justify-center rounded-full text-2xl border border-white/10">
-                  {fac.icon}
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="group bg-zinc-900/80 border border-zinc-800 rounded-[2rem] p-8 hover:border-lime-400/30 hover:bg-zinc-900 transition-all duration-300">
+              <div className="w-14 h-14 bg-lime-400/10 border border-lime-400/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                {f.icon}
               </div>
-              <div className="p-8 pt-4 relative z-20">
-                <h3 className="text-2xl font-bold mb-3">{fac.title}</h3>
-                <p className="text-zinc-400 leading-relaxed">{fac.description}</p>
+              <h3 className="text-xl font-bold mb-3">{f.title}</h3>
+              <p className="text-zinc-400 leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Bilder / Gallery Section (Tabs) ─── */}
+      <section id="gallery" className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
+        <div className="mb-12">
+          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Virtuelle Tour</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
+            Dein SmartGym von innen
+          </h2>
+        </div>
+
+        {/* Tab navigation */}
+        <div className="flex gap-3 mb-8 flex-wrap">
+          {galleryTabs.map((tab, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveTab(i)}
+              className={`px-6 py-3 rounded-full font-bold text-sm transition-all ${
+                activeTab === i
+                  ? 'bg-lime-400 text-black'
+                  : 'bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab content */}
+        <div className="relative rounded-[2.5rem] overflow-hidden h-[28rem] md:h-[36rem]">
+          <img
+            src={galleryTabs[activeTab].image}
+            alt={galleryTabs[activeTab].label}
+            className="w-full h-full object-cover transition-all duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">{galleryTabs[activeTab].label}</h3>
+            <p className="text-zinc-300 text-lg max-w-xl">{galleryTabs[activeTab].overlay}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Mitgliedschaft ─── */}
+      <section id="membership" className="relative py-24 px-4 md:px-8 overflow-hidden">
+        {/* BG */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2070&auto=format&fit=crop"
+            alt="Membership Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/85" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Mitgliedschaft</span>
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
+              Finde den richtigen<br />Tarif für dich
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {memberships.map((m, i) => (
+              <div
+                key={i}
+                className={`rounded-[2rem] p-8 border transition-all ${
+                  m.highlight
+                    ? 'bg-lime-400 text-black border-lime-400 scale-105'
+                    : 'bg-zinc-900/80 border-zinc-800 backdrop-blur'
+                }`}
+              >
+                {m.highlight && (
+                  <span className="inline-block bg-black text-lime-400 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                    Beliebteste Wahl
+                  </span>
+                )}
+                <h3 className="text-2xl font-black uppercase mb-2">{m.name}</h3>
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="text-4xl font-black">€{m.price}</span>
+                  <span className={`text-sm font-medium ${m.highlight ? 'text-black/60' : 'text-zinc-500'}`}>{m.interval}</span>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {m.features.map((f, j) => (
+                    <li key={j} className="flex items-center gap-3">
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${m.highlight ? 'bg-black text-lime-400' : 'bg-lime-400/20 text-lime-400'}`}>✓</span>
+                      <span className="font-medium">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button className={`w-full py-3 rounded-full font-bold transition-all hover:scale-105 active:scale-95 ${
+                  m.highlight
+                    ? 'bg-black text-white hover:bg-zinc-900'
+                    : 'bg-white/10 border border-white/20 hover:bg-white/20'
+                }`}>
+                  Jetzt starten
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Testimonials ─── */}
+      <section className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Stimmen</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
+            Was unsere Mitglieder sagen
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.map((t, i) => (
+            <div key={i} className="bg-zinc-900/80 border border-zinc-800 rounded-[2rem] p-8">
+              <div className="text-lime-400 text-lg mb-4">{'★'.repeat(t.stars)}</div>
+              <p className="text-zinc-300 leading-relaxed mb-6 text-lg italic">"{t.text}"</p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-lime-400/20 rounded-full flex items-center justify-center text-lime-400 font-bold">
+                  {t.name[0]}
+                </div>
+                <span className="font-bold">{t.name}</span>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Franchise/Contact (Kimi Backend Target) */}
-      <section id="contact" className="mt-20 px-4 md:px-8 max-w-5xl mx-auto">
-        <div className="bg-zinc-900 rounded-[3rem] p-10 md:p-16 border border-zinc-800 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#a3e635] rounded-full mix-blend-multiply filter blur-[128px] opacity-20" />
-          
-          <div className="relative z-10 max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-black uppercase tracking-tighter mb-6">Werde Partner</h2>
-            <p className="text-zinc-400 text-lg mb-10">
-              Interesse an einem eigenen Smart Gym Franchise? Wir bauen ein automatisiertes Ökosystem.
+      {/* ─── FAQ ─── */}
+      <section id="faq" className="py-24 px-4 md:px-8 max-w-3xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">FAQ</span>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
+            Häufige Fragen
+          </h2>
+        </div>
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="bg-zinc-900/80 border border-zinc-800 rounded-[1.5rem] overflow-hidden transition-all"
+            >
+              <button
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                className="w-full flex items-center justify-between px-8 py-6 text-left font-bold text-lg hover:text-lime-400 transition-colors"
+              >
+                {faq.q}
+                <span className={`text-2xl transition-transform duration-300 ${openFaq === i ? 'rotate-45' : ''}`}>+</span>
+              </button>
+              {openFaq === i && (
+                <div className="px-8 pb-6 text-zinc-400 leading-relaxed">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── CTA Section ─── */}
+      <section className="py-20 px-4 md:px-8 max-w-5xl mx-auto">
+        <div className="bg-lime-400 rounded-[3rem] p-10 md:p-16 text-black text-center relative overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-80 h-80 bg-white rounded-full mix-blend-overlay opacity-20" />
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-black rounded-full mix-blend-overlay opacity-10" />
+
+          <div className="relative z-10">
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6">
+              Bereit loszulegen?
+            </h2>
+            <p className="text-lg font-medium mb-10 max-w-xl mx-auto opacity-80">
+              Werde jetzt Mitglied und trainiere ab sofort 24/7 in deinem SmartGym.
             </p>
-            
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-              <input 
-                type="email" 
+
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+              <input
+                type="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="Deine E-Mail Adresse" 
-                className="flex-1 px-8 py-4 rounded-full bg-black/50 border border-zinc-700 focus:border-[#a3e635] outline-none text-white font-medium transition-colors"
+                placeholder="Deine E-Mail Adresse"
+                className="flex-1 px-8 py-4 rounded-full bg-white/90 border-0 focus:ring-4 focus:ring-black/20 outline-none text-black font-medium"
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={status === 'sending'}
-                className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-[#a3e635] transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+                className="bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-zinc-800 transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
               >
-                {status === 'sending' ? 'Wird gesendet...' : 'Anfrage senden'}
+                {status === 'sending' ? '...' : 'Los geht\'s'}
               </button>
             </form>
-            
             {status === 'success' && (
-              <div className="mt-4 inline-block bg-[#a3e635]/20 text-[#a3e635] px-6 py-2 rounded-full font-bold text-sm">
-                ✓ Anfrage erfolgreich an Kimi-Backend weitergeleitet!
-              </div>
+              <p className="mt-4 font-bold">✓ Anfrage gesendet!</p>
             )}
           </div>
         </div>
       </section>
+
+      {/* ─── Footer ─── */}
+      <footer className="py-12 px-8 border-t border-white/10 text-center text-zinc-500 text-sm">
+        <p>© 2026 SmartGym · Part of <span className="text-white font-medium">Fitness Nation</span></p>
+      </footer>
 
     </div>
   )

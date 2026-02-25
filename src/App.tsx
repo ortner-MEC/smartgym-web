@@ -49,21 +49,22 @@ function App() {
   ]
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-lime-400 selection:text-black">
+    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-[#86C1B7] selection:text-black">
 
       {/* ─── Navigation ─── */}
       <nav className="fixed w-full z-50 px-4 py-4 md:px-8">
         <div className="max-w-7xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-between px-6 py-3">
-          <div className="text-xl font-black uppercase tracking-tight">
-            Smart<span className="text-lime-400">Gym</span>
-          </div>
+        <div className="flex items-center gap-3 text-xl font-black uppercase tracking-tight">
+          <img src="/logo.jpg" alt="SmartGym Logo" className="h-8 w-8 rounded-lg object-contain bg-white" />
+          <span>Smart<span className="text-[#86C1B7]">Gym</span></span>
+        </div>
           <div className="hidden md:flex space-x-6 text-sm font-medium text-zinc-300">
             <a href="#features" className="hover:text-white transition-colors">Studio</a>
             <a href="#gallery" className="hover:text-white transition-colors">Tour</a>
             <a href="#membership" className="hover:text-white transition-colors">Mitgliedschaft</a>
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </div>
-          <button className="bg-lime-400 text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-white transition-all hover:scale-105 active:scale-95">
+          <button className="bg-[#86C1B7] text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-white transition-all hover:scale-105 active:scale-95">
             Mitglied werden
           </button>
         </div>
@@ -91,14 +92,14 @@ function App() {
           </div>
 
           <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-6">
-            Smart Gym<br /><span className="text-lime-400">Baiersbronn</span>
+            Smart Gym<br /><span className="text-[#86C1B7]">Baiersbronn</span>
           </h1>
           <p className="text-lg md:text-2xl text-zinc-300 font-light mb-10 max-w-2xl mx-auto">
             Dein 24/7 Fitnessstudio in Baiersbronn.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-lime-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_60px_rgba(163,230,53,0.25)]">
+            <button className="bg-[#86C1B7] text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_60px_rgba(163,230,53,0.25)]">
               Mitglied werden
             </button>
             <button className="border border-white/30 backdrop-blur px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all">
@@ -119,7 +120,7 @@ function App() {
       {/* ─── Feature Section ─── */}
       <section id="features" className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Dein Studio</span>
+          <span className="text-[#86C1B7] text-sm font-bold uppercase tracking-widest">Dein Studio</span>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3 mb-4">
             Alles was du zu deinem<br />Studio wissen musst
           </h2>
@@ -130,8 +131,8 @@ function App() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <div key={i} className="group bg-zinc-900/80 border border-zinc-800 rounded-[2rem] p-8 hover:border-lime-400/30 hover:bg-zinc-900 transition-all duration-300">
-              <div className="w-14 h-14 bg-lime-400/10 border border-lime-400/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+            <div key={i} className="group bg-zinc-900/80 border border-zinc-800 rounded-[2rem] p-8 hover:border-[#86C1B7]/30 hover:bg-zinc-900 transition-all duration-300">
+              <div className="w-14 h-14 bg-[#86C1B7]/10 border border-[#86C1B7]/20 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
                 {f.icon}
               </div>
               <h3 className="text-xl font-bold mb-3">{f.title}</h3>
@@ -144,7 +145,7 @@ function App() {
       {/* ─── Bilder / Gallery Section (Tabs) ─── */}
       <section id="gallery" className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="mb-12">
-          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Virtuelle Tour</span>
+          <span className="text-[#86C1B7] text-sm font-bold uppercase tracking-widest">Virtuelle Tour</span>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
             Dein SmartGym von innen
           </h2>
@@ -158,7 +159,7 @@ function App() {
               onClick={() => setActiveTab(i)}
               className={`px-6 py-3 rounded-full font-bold text-sm transition-all ${
                 activeTab === i
-                  ? 'bg-lime-400 text-black'
+                  ? 'bg-[#86C1B7] text-black'
                   : 'bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500'
               }`}
             >
@@ -196,7 +197,7 @@ function App() {
 
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Mitgliedschaft</span>
+            <span className="text-[#86C1B7] text-sm font-bold uppercase tracking-widest">Mitgliedschaft</span>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
               Finde den richtigen<br />Tarif für dich
             </h2>
@@ -208,12 +209,12 @@ function App() {
                 key={i}
                 className={`rounded-[2rem] p-8 border transition-all ${
                   m.highlight
-                    ? 'bg-lime-400 text-black border-lime-400 scale-105'
+                    ? 'bg-[#86C1B7] text-black border-[#86C1B7] scale-105'
                     : 'bg-zinc-900/80 border-zinc-800 backdrop-blur'
                 }`}
               >
                 {m.highlight && (
-                  <span className="inline-block bg-black text-lime-400 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                  <span className="inline-block bg-black text-[#86C1B7] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                     Beliebteste Wahl
                   </span>
                 )}
@@ -225,7 +226,7 @@ function App() {
                 <ul className="space-y-3 mb-8">
                   {m.features.map((f, j) => (
                     <li key={j} className="flex items-center gap-3">
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${m.highlight ? 'bg-black text-lime-400' : 'bg-lime-400/20 text-lime-400'}`}>✓</span>
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${m.highlight ? 'bg-black text-[#86C1B7]' : 'bg-[#86C1B7]/20 text-[#86C1B7]'}`}>✓</span>
                       <span className="font-medium">{f}</span>
                     </li>
                   ))}
@@ -246,7 +247,7 @@ function App() {
       {/* ─── Testimonials ─── */}
       <section className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">Stimmen</span>
+          <span className="text-[#86C1B7] text-sm font-bold uppercase tracking-widest">Stimmen</span>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
             Was unsere Mitglieder sagen
           </h2>
@@ -254,10 +255,10 @@ function App() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
             <div key={i} className="bg-zinc-900/80 border border-zinc-800 rounded-[2rem] p-8">
-              <div className="text-lime-400 text-lg mb-4">{'★'.repeat(t.stars)}</div>
+              <div className="text-[#86C1B7] text-lg mb-4">{'★'.repeat(t.stars)}</div>
               <p className="text-zinc-300 leading-relaxed mb-6 text-lg italic">"{t.text}"</p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-lime-400/20 rounded-full flex items-center justify-center text-lime-400 font-bold">
+                <div className="w-10 h-10 bg-[#86C1B7]/20 rounded-full flex items-center justify-center text-[#86C1B7] font-bold">
                   {t.name[0]}
                 </div>
                 <span className="font-bold">{t.name}</span>
@@ -270,7 +271,7 @@ function App() {
       {/* ─── FAQ ─── */}
       <section id="faq" className="py-24 px-4 md:px-8 max-w-3xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">FAQ</span>
+          <span className="text-[#86C1B7] text-sm font-bold uppercase tracking-widest">FAQ</span>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mt-3">
             Häufige Fragen
           </h2>
@@ -283,7 +284,7 @@ function App() {
             >
               <button
                 onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="w-full flex items-center justify-between px-8 py-6 text-left font-bold text-lg hover:text-lime-400 transition-colors"
+                className="w-full flex items-center justify-between px-8 py-6 text-left font-bold text-lg hover:text-[#86C1B7] transition-colors"
               >
                 {faq.q}
                 <span className={`text-2xl transition-transform duration-300 ${openFaq === i ? 'rotate-45' : ''}`}>+</span>
@@ -300,7 +301,7 @@ function App() {
 
       {/* ─── CTA Section ─── */}
       <section className="py-20 px-4 md:px-8 max-w-5xl mx-auto">
-        <div className="bg-lime-400 rounded-[3rem] p-10 md:p-16 text-black text-center relative overflow-hidden">
+        <div className="bg-[#86C1B7] rounded-[3rem] p-10 md:p-16 text-black text-center relative overflow-hidden">
           <div className="absolute -top-20 -right-20 w-80 h-80 bg-white rounded-full mix-blend-overlay opacity-20" />
           <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-black rounded-full mix-blend-overlay opacity-10" />
 

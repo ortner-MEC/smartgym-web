@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #a3e635; /* Example Lime green, waiting for logo colors */
+  --color-dark: #09090b;
+}
+
+body {
+  background-color: var(--color-dark);
+  color: #fafafa;
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+}
